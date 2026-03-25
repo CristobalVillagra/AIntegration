@@ -20,7 +20,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const preference = await api.checkout.createPreference(items, userId);
+    // Obtener baseUrl desde el request header o env vars
+    const host = req.headers.get("host") || "";
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+      || (host ? `${protocol}://${host}` : null)
+      || "http://localhost:3000";
+    
+    const preference = await api.checkout.createPreference(items, userId, baseUrl);
 
     return NextResponse.json({
       id: preference.id,

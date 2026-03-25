@@ -21,7 +21,7 @@ interface PreferenceResponse {
 
 const api = {
   checkout: {
-    async createPreference(items: CartItem[], userId: string): Promise<PreferenceResponse> {
+    async createPreference(items: CartItem[], userId: string, baseUrl: string): Promise<PreferenceResponse> {
       const token = process.env.MP_ACCESS_TOKEN?.trim();
       
       if (!token || token.length < 20) {
@@ -32,8 +32,11 @@ const api = {
         throw new Error("No hay items en el carrito");
       }
 
+      if (!baseUrl) {
+        throw new Error("baseUrl es requerida para MercadoPago");
+      }
+
       const preference = new Preference(mercadopago);
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
       const response = await preference.create({
         body: {
