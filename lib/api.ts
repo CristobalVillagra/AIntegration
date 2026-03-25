@@ -33,20 +33,7 @@ const api = {
       }
 
       const preference = new Preference(mercadopago);
-      
-      // Obtener base URL - requerida para auto_return
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.trim();
-      
-      if (!baseUrl) {
-        throw new Error("NEXT_PUBLIC_BASE_URL no configurada. Configura esta variable de entorno.");
-      }
-
-      // Construir back_urls con URLs absolutas válidas
-      const backUrls = {
-        success: `${baseUrl}/pago-exitoso`,
-        failure: `${baseUrl}/carrito`,
-        pending: `${baseUrl}/pago-pendiente`,
-      };
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
       const response = await preference.create({
         body: {
@@ -61,7 +48,11 @@ const api = {
             user_id: userId,
             services_ids: items.map(i => i.serviceId).join(",")
           },
-          back_urls: backUrls,
+          back_urls: {
+            success: `${baseUrl}/pago-exitoso`,
+            failure: `${baseUrl}/carrito`,
+            pending: `${baseUrl}/pago-pendiente`,
+          },
           auto_return: "approved",
         }
       });
