@@ -28,7 +28,15 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Error desconocido";
+    console.log("[v0] Full error object:", error);
+    
+    let message = "Error desconocido";
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (typeof error === "object" && error !== null) {
+      message = JSON.stringify(error);
+    }
+    
     console.error("[Checkout API Error]:", message);
     
     return NextResponse.json(
