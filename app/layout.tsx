@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-// @ts-ignore
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 import { Analytics } from '@vercel/analytics/react'
 import { Providers } from '@/components/providers'
@@ -8,29 +9,9 @@ import Script from 'next/script'
 import './globals.css'
 import { WhatsAppButton } from '@/components/whatsapp-button'
 
-
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
-
-
-
-
-
-
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: '--font-geist-sans', // Definimos una variable CSS
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: '--font-geist-mono',
-});
-
 export const metadata: Metadata = {
   title: 'AIntegration - Soluciones de IA e Informática',
-  description: 'Transformamos tu empresa con soluciones tecnológicas inteligentes. Cotiza servicios de informática, desarrollo web, IA y más.',
+  description: 'Transformamos tu empresa con soluciones tecnológicas inteligentes.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -44,22 +25,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    // suppressHydrationWarning evita errores de consola por temas (light/dark)
     <html lang="es" suppressHydrationWarning>
-      <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${inter.className} font-sans antialiased`}>
         <Providers>
           {children}
           <WhatsAppButton />
           {process.env.NODE_ENV === 'production' && <Analytics />}
-          <Analytics />
         </Providers>
-        <Script src="https://sdk.mercadopago.com/js/v2" strategy="beforeInteractive" />
+
+        <Script
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   )
-
 }
