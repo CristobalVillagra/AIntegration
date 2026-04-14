@@ -42,7 +42,6 @@
     "@vercel/analytics": "1.6.1",
     "@vercel/speed-insights": "^2.0.0",
     "aos": "^2.3.4",
-    "astro": "^5.18.0",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

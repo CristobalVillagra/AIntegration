@@ -4,13 +4,10 @@ import {
   Code,
   Brain,
   Database,
-  ShoppingCart,
   ArrowRight,
   CheckCircle2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useAuth } from "@/contexts/auth-context"
-import { useCart } from "@/contexts/cart-context"
 
 // Definimos los servicios con la estructura exacta que espera tu carrito
 const services = [
@@ -41,22 +38,6 @@ const services = [
 ]
 
 export function ServicesSection() {
-  const { requireAuth, isLoggedIn } = useAuth()
-  const { addToCart } = useCart()
-
-  const handleAddToCart = (service: typeof services[0]) => {
-    requireAuth(() => {
-      addToCart({
-        serviceId: service.serviceId,
-        title: service.title,
-        description: service.description,
-        price: service.price, // Corregido: antes decía servicio.precio_clp
-        // Generamos el priceDisplay al vuelo o lo incluimos en el objeto
-        //priceDisplay: `$${service.price.toLocaleString('es-CL')}` 
-      })
-    })
-  }
-
   const scrollToCotizar = () => {
     document.getElementById("cotizar")?.scrollIntoView({ behavior: "smooth" })
   }
@@ -122,17 +103,9 @@ export function ServicesSection() {
                 <div className="flex gap-3">
                   <Button
                     className="flex-1 h-12 rounded-xl font-bold shadow-lg shadow-primary/20"
-                    onClick={() => handleAddToCart(service)}
-                  >
-                    <ShoppingCart className="mr-2 h-5 w-5" />
-                    {isLoggedIn ? "Añadir" : "Contratar"}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-12 h-12 rounded-xl border-border hover:bg-primary/5 hover:border-primary transition-all"
                     onClick={scrollToCotizar}
                   >
-                    <ArrowRight className="h-5 w-5" />
+                    Contratar
                   </Button>
                 </div>
               </div>
@@ -140,14 +113,6 @@ export function ServicesSection() {
           ))}
         </div>
 
-        {/* Footer de sección */}
-        {!isLoggedIn && (
-          <div className="mt-12 p-4 rounded-2xl bg-secondary/30 border border-border/50 max-w-md mx-auto text-center">
-            <p className="text-sm text-muted-foreground">
-              👋 ¿Listo para empezar? <span className="font-semibold text-primary">Inicia sesión</span> para gestionar tu carrito.
-            </p>
-          </div>
-        )}
       </div>
     </section>
   )

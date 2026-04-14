@@ -6,6 +6,17 @@ import { Analytics } from '@vercel/analytics/react'
 import { Providers } from '@/components/providers'
 import Script from 'next/script'
 import './globals.css'
+import { WhatsAppButton } from '@/components/whatsapp-button'
+
+
+const _geist = Geist({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
+
+
+
+
+
+
 
 const geist = Geist({
   subsets: ["latin"],
@@ -42,10 +53,13 @@ export default function RootLayout({
       <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
         <Providers>
           {children}
+          <WhatsAppButton />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
           <Analytics />
         </Providers>
         <Script src="https://sdk.mercadopago.com/js/v2" strategy="beforeInteractive" />
       </body>
     </html>
   )
+
 }
